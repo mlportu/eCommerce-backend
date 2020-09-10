@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
         model: Tag,
         attributes:['tag_name'],
         through: ProductTag,
-        as: 'prod_tag_id'
+        as: 'products'
       },
       {
         model: Category,
@@ -51,16 +51,16 @@ router.get('/:id', (req, res) => {
     'category_id'
     ],
     include: [
-    {
-      model: Tag,
-      attributes:['tag_name'],
-      through: ProductTag,
-      as: 'prod_tag_id'
-    },
-    {
-      model: Category,
-      attributes: ['category_name']
-    }
+      {
+        model: Category,
+        attributes: ['id','category_name']
+      },
+      {
+        model: Tag,
+        attributes:['tag_name'],
+        through: ProductTag,
+        as: 'products'
+      },
   ]
 })
 .then(dbProductData => res.json(dbProductData))
@@ -145,7 +145,7 @@ router.put('/:id', (req, res) => {
     })
     .then((updatedProductTags) => res.json(updatedProductTags))
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
       res.status(400).json(err);
     });
 });
